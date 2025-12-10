@@ -11,7 +11,7 @@ DCR_35 = 1.70;                      %Cell internal resistance at 35 deg C and 50
 T_init = 25;                        %Initial cell temperature
 T_amb = 25;                         %Ambient temperature
 A_sink = 700;                       %Surface area of the heatsink in mm^2
-h = 120;                            %Guess for forced convective heat transfer coefficient
+h = 135;                            %Guess for forced convective heat transfer coefficient
 htc = h * A_sink * (1/1000)^2;      %Heat transfer coefficient in W/K
 
 % Tab Thermal model assuming the following specific heat capacities
@@ -73,7 +73,10 @@ for i=1:length(thermal_data.data(:,1))-1
     Q_cool = htc * (T_sens - T_amb) * step_length;
 
     %Heat generated at the tab interface due to contact resistance, not used at the moment
-    Q_res = 0;      %(thermal_data.data(i,2)) ^ 2 * 187 * 10^(-6) * step_length;
+    %Q_res = (thermal_data.data(i,2)) ^ 2 * 187 * 10^(-6) * step_length;
+    
+    %Uncomment the line of code below to set the heat generated at the tab itself to 0
+    Q_res = 0;
 
     T_cell = T_cell + (Q_gen - Q_cond) / C_cell;
 
@@ -97,4 +100,4 @@ plot(simulated_cell(:,4),simulated_cell(:,5))
 plot(thermal_data.data(:,7),thermal_data.data(:,6))
 hold off
 
-writematrix(simulated_cell,'Output.csv')
+%writematrix(simulated_cell,'Output.csv')
